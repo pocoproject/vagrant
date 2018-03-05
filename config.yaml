@@ -1,5 +1,4 @@
 ---
 configs:
-    run_env: 'docker'
     provider: 'virtualbox'
   
