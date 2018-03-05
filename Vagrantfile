@@ -35,6 +35,7 @@ Vagrant.configure("2") do |config|
   if provider == "virtualbox"
     config.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 2048]
+      v.name = "poco-build-trusty64"
     end
   else
     puts "Missing or not suported vagrant provider: #$ENV['VAGRANT_PROVIDER']"
@@ -49,9 +50,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, inline: "docker pull phusion/baseimage:0.10.0"
 
   config.vm.provision :shell, inline: "cd /vagrant/docker/"
-  # TODO: add capability to provide various configs here from outside
-  config.vm.provision :shell, inline: "./configure"
-  config.vm.provision :shell, inline: "./run"
-  
+  # TODO: add capability to loop over various configs provided from outside
+  config.vm.provision :shell, inline: "/vagrant/docker/configure"
+  config.vm.provision :shell, inline: "COMPOSE_PROJECT_NAME=/vagrant/docker /vagrant/docker/run"
+
   #TODO: other boxen (windows, osx, android ...)
 end # Vagrant.configure
